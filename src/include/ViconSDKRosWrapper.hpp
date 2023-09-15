@@ -62,7 +62,6 @@ bool airoVICON::ViconSDKRosWrapper::ViconInit(
 )
 {
     _nh.getParam("vicon_ip_addr", vicon_ip_addr);
-    vicon_ip_addr = "192.168.10.1";
 
     int counter = 0;
 

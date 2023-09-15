@@ -17,15 +17,27 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_python_setup()
 
+
+
+find_package(Boost COMPONENTS system filesystem REQUIRED)
+
+add_message_files(
+  FILES
+  PointArray.msg
+  # AlanPlannerMsg.msg 
+  # StateMachine.msg
+  # Target.msg
+  # vector3D.msg
+  # vector4D.msg
+)
+generate_messages(DEPENDENCIES   geometry_msgs )
+
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES offb
   CATKIN_DEPENDS rospy geometry_msgs mavros_msgs roscpp std_msgs message_generation
 #  DEPENDS system_lib
 )
-
-find_package(Boost COMPONENTS system filesystem REQUIRED)
-
 
 include_directories(
   include

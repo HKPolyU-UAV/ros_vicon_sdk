@@ -45,6 +45,7 @@
 #include <vector>
 #include <cmath>
 #include <random>
+#include <memory>
 #include <tuple> 
 #include <thread>
 
@@ -91,6 +92,12 @@ namespace pc
       default       : os << "\033[1;37m";
     }
     return os;
+  }
+
+  inline void pattyDebug(std::string debug_message)
+  {
+      ROS_INFO_STREAM(pc::RED << "DEBUG! -> " << debug_message << pc::ENDCOLOR);
+      ros::shutdown();
   }
 } //namespace pc
 

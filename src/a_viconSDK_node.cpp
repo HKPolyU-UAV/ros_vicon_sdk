@@ -32,5 +32,7 @@ int main(int argc, char **argv)
 
     myViconFunction::ViconMe lala(nh);
 
+    ros::spin();
+
     return 0;
 }
