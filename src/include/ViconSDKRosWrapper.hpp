@@ -44,14 +44,6 @@ namespace airoVICON
             ViconDataStreamSDK::CPP::Client& client_obj
         );
     };
-    
-    ViconSDKRosWrapper::ViconSDKRosWrapper(/* args */)
-    {
-    }
-    
-    ViconSDKRosWrapper::~ViconSDKRosWrapper()
-    {
-    }
 }
 
 airoVICON::ViconSDKRosWrapper::ViconSDKRosWrapper()
@@ -74,11 +66,14 @@ bool airoVICON::ViconSDKRosWrapper::ViconInit(
 
     int counter = 0;
 
+    // const ViconDataStreamSDK::CPP::Output_Connect ConnectResult;
+
     while(!DirectClient.IsConnected().Connected)
     {
         // Direct connection
         std::string display_msg = "ATTEMPT TO CONNECT " + vicon_ip_addr;
         ROS_BLUE_STREAM(display_msg);
+        DirectClient.Connect(vicon_ip_addr);
         counter++;
 
         if(counter > 100)
@@ -127,7 +122,7 @@ bool airoVICON::ViconSDKRosWrapper::ViconInit(
         ViconDataStreamSDK::CPP::Direction::Up
     );     
 
-    client_obj = ViconDataStreamSDK::CPP::Client(DirectClient);
+    client_obj = DirectClient;
 
     counter = 0;
     while (
@@ -148,12 +143,14 @@ bool airoVICON::ViconSDKRosWrapper::ViconInit(
 
     ROS_GREEN_STREAM("GETFRAME SUCCESS!");
     unsigned int SubjectCount = client_obj.GetSubjectCount().SubjectCount;
-    std::string display_msg = "CURRENTLY YOU HAVE" 
+    std::string display_msg = "CURRENTLY YOU HAVE " 
         + std::to_string(SubjectCount)
-        + "OBJECT(S)!";
+        + " OBJECT(S)!";
     ROS_YELLOW_STREAM(display_msg);
 
     ROS_GREEN_STREAM("END VICON INIT!");
+
+    return true;
 }
 
 std::string airoVICON::ViconSDKRosWrapper::Adapt(const bool i_value)

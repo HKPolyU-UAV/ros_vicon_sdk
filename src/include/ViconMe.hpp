@@ -30,21 +30,34 @@ namespace myViconFunction
     class ViconMe : private airoVICON::ViconSDKRosWrapper
     {
     private:
+    ros::NodeHandle nh;
+        ViconDataStreamSDK::CPP::Client client_obj;
+        void initPublisher();
     public:
         ViconMe(ros::NodeHandle& _nh);
         ~ViconMe();
+        void init();
     };
 }
 
 myViconFunction::ViconMe::ViconMe(ros::NodeHandle& _nh)
+: nh(_nh)
 {
-    
-
+    bool connectSuccess = ViconInit(nh, client_obj);
 }
 
 myViconFunction::ViconMe::~ViconMe()
 {
     ROS_BLUE_STREAM("END CLASS of ViconMe");
 }
+
+void myViconFunction::ViconMe::init()
+{
+    
+
+}
+
+
+
 
 
