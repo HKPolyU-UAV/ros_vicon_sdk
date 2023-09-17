@@ -46,7 +46,7 @@ namespace myViconFunction
         ros_vicon_sdk::PointArray led_posi_list;
         ros::Publisher led_list_posi_pub;
 
-        void get_led_position();
+        bool get_led_position();
 
     public:
         ViconMe(ros::NodeHandle& _nh);
@@ -67,7 +67,7 @@ myViconFunction::ViconMe::ViconMe(ros::NodeHandle& _nh)
     
     initPublisher();
     pub_timer = nh.createTimer(
-        ros::Duration(0.01),
+        ros::Duration(0.04),
         &myViconFunction::ViconMe::mainspin_callback,
         this
     );
@@ -83,13 +83,14 @@ void myViconFunction::ViconMe::mainspin_callback(const ros::TimerEvent &e)
 {
     /*==== my design functionalities ====*/ 
     // call my functionalities here!
-    get_led_position();
+    bool success = get_led_position();
 
     /*==== my design functionalities ====*/ 
 
     
     // publish whatever you want
-    led_list_posi_pub.publish(led_posi_list);
+    if(success)
+        led_list_posi_pub.publish(led_posi_list);
 
     // publisher0.publisher(obj0);
     // publisher1.publisher(obj1);
@@ -115,12 +116,20 @@ void myViconFunction::ViconMe::initPublisher()
     // ros::shutdown();
 }
 
-void myViconFunction::ViconMe::get_led_position()
+bool myViconFunction::ViconMe::get_led_position()
 {
     int subjectcount = client_obj.GetSubjectCount().SubjectCount;
 
     led_posi_list.PointArray.clear();
     geometry_msgs::Point point_temp;
+
+    if(client_obj.GetFrame().Result != 
+        ViconDataStreamSDK::CPP::Result::Success
+    )
+    {
+        ROS_WARN("GET FRAME FAILED!");
+        return false;
+    }
 
     int led_count = 0;
 
@@ -140,17 +149,15 @@ void myViconFunction::ViconMe::get_led_position()
                 client_obj.GetMarkerGlobalTranslation( SubjectName, MarkerName );
 
             point_temp.x = LedMarkerTranslation.Translation[0];
-            point_temp.x = LedMarkerTranslation.Translation[1];
-            point_temp.x = LedMarkerTranslation.Translation[2];
+            point_temp.y = LedMarkerTranslation.Translation[1];
+            point_temp.z = LedMarkerTranslation.Translation[2];
             
             led_posi_list.PointArray.emplace_back(point_temp);
+            // std::cout<<"hi"<<std::endl;
         }
     }
 
-    if(led_posi_list.PointArray.size() != led_count)
-    {
-        pc::pattyDebug("GOT SHIT, CHECK!");
-    }
+    return true;
 }
 
 

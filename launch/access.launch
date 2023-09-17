@@ -1,6 +1,6 @@
 <launch> 
     <node pkg="ros_vicon_sdk" name="a_viconSDK_node" type="a_viconSDK_node" output="screen">
-        <param name="/vicon_ip_addr" type="string" value="192.168.1.180"/> 
+        <param name="/vicon_ip_addr" type="string" value="192.168.10.1"/> 
         <!-- confirm that the address exists (whether vicon or not); I think there's a 
         little bug inside SDK, where failsafe for non-existing ip_addr is not dealt -->
         <rosparam command="load" file="$(find ros_vicon_sdk)/launch/viconMe_SUBPUB_topics.yaml" />
