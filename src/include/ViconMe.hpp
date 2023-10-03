@@ -156,6 +156,8 @@ bool myViconFunction::ViconMe::get_led_position()
             // std::cout<<"hi"<<std::endl;
         }
     }
+    
+    led_posi_list.header.stamp = ros::Time::now();
 
     return true;
 }
